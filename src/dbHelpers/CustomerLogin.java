@@ -63,10 +63,7 @@ public class CustomerLogin {
 				customer = new Customer( rs.getString("fName"), rs.getString("lName"),
 						rs.getString("address"), rs.getString("city"), rs.getString("state"),
 						rs.getInt("zip"), rs.getString("uName"), rs.getString("password"));
-			} else {
-				String msg = "Incorrect username and/or password.";
-				System.out.println(msg);
-			}
+			} 
 		} catch (SQLException e) {	
 			// TODO Auto-generated catch block
 			e.printStackTrace();
