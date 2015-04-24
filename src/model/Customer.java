@@ -23,7 +23,14 @@ public class Customer {
 	// creates information for new customer when registering
 	public Customer(String fName, String lName, String address, String city,
 			String state, int zip, String uName, String password) {
-		
+		this.fName = fName;
+		this.lName = lName;
+		this.address = address;
+		this.city = city;
+		this.state = state;
+		this.zip = zip;
+		this.uName = uName;
+		this.password = password;	
 	}
 
 	/**
