@@ -8,13 +8,34 @@
 </head>
 <body>
 	<form action="register" method="POST">
-		<h1>Log In</h1>
-		<input type=text name=uName placeholder=username required>
+		<h1>Fill out the required fields.</h1>
+		<label>First Name:</label>
+		<input type=text name=fName placeholder="first name" required>
 		<br>
-		<input type=password name=password placeholder=password required>
+		<label>Last Name:</label>
+		<input type=text name=lName placeholder="last name" required>
+		<br>
+		<label>Address:</label>
+		<input type=text name=address placeholder="street" required>
+		<br>
+		<label>City:</label>
+		<input type=text name=city placeholder="city" required>
+		<br>
+		<label>State:</label>
+		<input type=text name=state placeholder="state" required>
+		<br>
+		<label>Zip:</label>
+		<input type=text name=zip placeholder="zip" required>
+		<br>
+		<label>Username:</label>
+		<input type=text name=username placeholder="username" required>
+		<br>
+		<label>Password:</label>
+		<input type=text name=password placeholder="password" required>
 		<br>
 		<input type=submit name=submit value="Login">
-		<br>
+		<br
+	
 	</form>
 </body>
 </html>
