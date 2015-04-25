@@ -52,7 +52,7 @@ public class AddCustServlet extends HttpServlet {
 				state, zip, uName, password);
 		
 		// create an AddCustomerQuery object and use it to add the customer
-		AddCustQuery acq = new AddCustQuery("customer", "root", "password");
+		AddCustQuery acq = new AddCustQuery("netappsdb", "root", "password");
 		acq.doAdd(customer);
 		
 		// pass control to the customerAccount
