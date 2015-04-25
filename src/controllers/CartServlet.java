@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.Cart;
-import model.Product;
 
 /**
  * Servlet implementation class CartServlet
@@ -44,11 +43,12 @@ public class CartServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		session = request.getSession();;
 		Cart cart = (Cart) session.getAttribute("cart");
 		
 		request.setAttribute("total", cart.getTotal());
 		
-		String url = "/cart.jsp";
+		String url = "cart.jsp";
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response);

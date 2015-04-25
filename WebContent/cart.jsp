@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="model.Product" %>
 <%@ page import="model.Cart" %>
 <%
 	Cart cart = (Cart)session.getAttribute("cart");
-	double total = Double.parseDouble(request.getAttribute("total"));
-
+	double total = (Double)request.getAttribute("total");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -17,6 +17,7 @@
 <body>
 	<!-- Title -->
 	<div>
+		<h1 class="page-header">Your Cart</h1>
 	</div>
 	<!-- Body -->
 	<div>
@@ -34,7 +35,8 @@
 		<h3>Total Price: <%=total %></h3>
 	</div>
 	<!-- Footer -->
-	<div>
+	<div class="page-header">
+		<a href="color:black"><h3>Back to Products</h3></a>
 	</div>
 </body>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

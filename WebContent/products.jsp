@@ -3,9 +3,10 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import="model.Product" %>
 <%@ page import="model.Cart" %>
+<%@ page import="java.util.ArrayList" %>
 <%
 	Cart cart = (Cart)session.getAttribute("cart");
-
+	ArrayList<Product> inventory = (ArrayList<Product>)session.getAttribute("inventory");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -22,18 +23,18 @@
 	</div>
 	<!-- Body -->
 	<div>
-		<form action="addProduct" method=POST>
-		<!-- 
-		<c:forEach var="current" items="${products}">
+		<form action="addProduct" method=POST> 
+		<c:forEach var="current" items="${inventory}">
 			<div>
 				<h4>${current.name}</h4><br>
 				<div><img src="images/${current.url}" style="height:200px; width:300px;"></div><br>
 				<h4>Price: $${current.price }</h4><br>
 				<h4>Remaining Items: ${current.quantity}</h4>
-				<input class="form-control" type=text name="${current.name}Quantity"><br>
+				<input class="form-control" type=text name="quantity"><br>
+				<input class="form-control" type=text name="id" value=${current.id }><br>
 				<button type="submit" class="btn btn-default">Add to Cart</button>
 			</div>
-		</c:forEach>-->
+		</c:forEach>
 		</form>
 	</div>
 	<!-- Footer -->
