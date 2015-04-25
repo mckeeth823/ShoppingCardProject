@@ -41,7 +41,7 @@ public class UpdateQuantityQuery {
 	
 	public void doUpdate(Product product)
 	{
-		String query = "update products set quantity=? where id=?"; // TODO: Ensure columns are named quantity and id in database
+		String query = "update product set quantity=? where id=?"; // TODO: Ensure columns are named quantity and id in database
 		
 		try {
 			PreparedStatement ps = connection.prepareStatement(query);

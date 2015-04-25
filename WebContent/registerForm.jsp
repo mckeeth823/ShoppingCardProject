@@ -28,10 +28,10 @@
 		<input type=text name=zip placeholder="zip" required>
 		<br>
 		<label>Username:</label>
-		<input type=text name=username placeholder="username" required>
+		<input type=text name=uName placeholder="username" required>
 		<br>
 		<label>Password:</label>
-		<input type=text name=password placeholder="password" required>
+		<input type=password name=password placeholder="password" required>
 		<br>
 		<input type=submit name=submit value="Register">
 		<br>
