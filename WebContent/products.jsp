@@ -17,10 +17,13 @@
 <body>
 	<!-- Title -->
 	<div>
+		<h1 class="page-header">Product Shopper</h1>
+		<button class="btn btn-default" style="background-color:yellow; color:black;">My Cart</button>
 	</div>
 	<!-- Body -->
 	<div>
-		<form action="#" method=POST>
+		<form action="addProduct" method=POST>
+		<!-- 
 		<c:forEach var="current" items="${products}">
 			<div>
 				<h4>${current.name}</h4><br>
@@ -30,7 +33,7 @@
 				<input class="form-control" type=text name="${current.name}Quantity"><br>
 				<button type="submit" class="btn btn-default">Add to Cart</button>
 			</div>
-		</c:forEach>
+		</c:forEach>-->
 		</form>
 	</div>
 	<!-- Footer -->

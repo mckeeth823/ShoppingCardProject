@@ -31,4 +31,21 @@ public class Cart {
 	{
 		return products;
 	}
+	
+	public void addProduct(Product product)
+	{
+		this.products.add(product);
+	}
+	
+	public double getTotal()
+	{
+		double total = 0.00;
+		
+		for(Product product : products)
+		{
+			total+=product.getTotal();
+		}
+		
+		return total;
+	}
 }

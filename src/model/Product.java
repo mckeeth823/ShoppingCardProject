@@ -71,4 +71,9 @@ public class Product {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+	
+	public double getTotal()
+	{
+		return this.quantity * this.price;
+	}
 }

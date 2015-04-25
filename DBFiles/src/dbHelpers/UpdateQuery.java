@@ -38,7 +38,7 @@ public class UpdateQuery {
 	
 	public void doUpdate(Product product)
 	{
-		String query = "update products set type=?, flavor=?, cost=?, price=?, quantity=? where sku=?";
+		String query = "update products set quantity=? where id=?"; // TODO: Ensure columns are named quantity and id in database
 		
 		try {
 			PreparedStatement ps = connection.prepareStatement(query);

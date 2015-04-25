@@ -56,7 +56,7 @@ public class AddCustServlet extends HttpServlet {
 		acq.doAdd(customer);
 		
 		// pass control to the customerAccount
-		String url = "/customerAccount";
+		String url = "/products.jsp";
 				
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response);

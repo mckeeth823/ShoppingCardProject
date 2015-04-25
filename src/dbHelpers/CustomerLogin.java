@@ -32,7 +32,7 @@ public class CustomerLogin {
 			
 			Class.forName("com.mysql.jdbc.Driver");
 			this.connection = DriverManager.getConnection(
-					"jdbc:mysql://localhost/shopping", "root", "");
+					"jdbc:mysql://localhost:3306/", "root", "");
 			
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
