@@ -155,10 +155,6 @@
 			</div>
 		</c:when>
 	</c:choose>
-	<!-- Footer -->
-	<div class="page-header">
-		<a href="products.jsp"><h3>Back to Products</h3></a>
-	</div>
 </body>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="Scripts/jquery-1.11.x.min.js"></script>

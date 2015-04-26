@@ -33,7 +33,7 @@
 				<input class="form-control" type=password name=password required>
 			</div>
 			</br>
-			<button type="submit" class="btn btn-default">Submit</button>
+			<button type="submit" class="btn btn-default" name=submit>Submit</button>
 			</br>
 			<br>
 			</form>
@@ -64,5 +64,7 @@
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="Scripts/jquery-1.11.x.min.js"></script>
 <script src="Scripts/js/bootstrap.min.js"></script>
+<script src="Scripts/jquery.validate.min.js"></script>
+<script src="Scripts/js/validation/login.js"></script>
 </body>
 </html>

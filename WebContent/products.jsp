@@ -75,10 +75,17 @@
 								<div class="productDetails">
 									<h3>Price: <small> $${current.price }</small></h3>
 									<h3>Remaining Items:<small>${current.quantity}</small></h3>
-									<h3>Quantity: </h3>
-									<input class="form-control qInput" type=text name="quantity" required>
-									<input class="form-control" type=hidden name="id" value=${current.id }>
-									<button type="submit" class="btn btn-default">Add to Cart</button>
+									<c:choose>
+										<c:when test="${current.quantity == 0 }">
+											<h3>Out of Stock</h3>
+										</c:when>
+										<c:otherwise>
+											<h3>Quantity: </h3>
+											<input class="form-control qInput" type=text name="quantity" required>
+											<input class="form-control" type=hidden name="id" value=${current.id }>
+											<button type="submit" class="btn btn-default">Add to Cart</button>
+										</c:otherwise>
+									</c:choose>
 								</div>
 							</div>
 						</form>
@@ -92,10 +99,17 @@
 								<div class="productDetails">
 									<h3>Price: <small>$${current.price }</small></h3>
 									<h3>Remaining Items: <small>${current.quantity}</small></h3>
-									<h3>Quantity: </h3>
-									<input class="form-control qInput" type=text name="quantity" required>
-									<input class="form-control" type=hidden name="id" value=${current.id }>
-									<button type="submit" class="btn btn-default">Add to Cart</button>
+									<c:choose>
+										<c:when test="${current.quantity == 0 }">
+											<h3>Out of Stock</h3>
+										</c:when>
+										<c:otherwise>
+											<h3>Quantity: </h3>
+											<input class="form-control qInput" type=text name="quantity" required>
+											<input class="form-control" type=hidden name="id" value=${current.id }>
+											<button type="submit" class="btn btn-default">Add to Cart</button>
+										</c:otherwise>
+									</c:choose>
 								</div>
 							</div>
 						</form>
@@ -109,10 +123,17 @@
 								<div class="productDetails">
 									<h3>Price: <small>$${current.price }</small></h3>
 									<h3>Remaining Items: <small>${current.quantity}</small></h3>
-									<h3>Quantity: </h3>
-									<input class="form-control qInput" type=text name="quantity" required>
-									<input class="form-control" type=hidden name="id" value=${current.id }>
-									<button type="submit" class="btn btn-default">Add to Cart</button>
+									<c:choose>
+										<c:when test="${current.quantity == 0 }">
+											<h3>Out of Stock</h3>
+										</c:when>
+										<c:otherwise>
+											<h3>Quantity: </h3>
+											<input class="form-control qInput" type=text name="quantity" required>
+											<input class="form-control" type=hidden name="id" value=${current.id }>
+											<button type="submit" class="btn btn-default">Add to Cart</button>
+										</c:otherwise>
+									</c:choose>
 								</div>
 							</div>
 						</form>
@@ -127,5 +148,7 @@
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="Scripts/jquery-1.11.x.min.js"></script>
 <script src="Scripts/js/bootstrap.min.js"></script>
+<script src="Scripts/jquery.validate.min.js"></script>
+<script src="Scripts/js/validation/products.js"></script>
 </body>
 </html>
