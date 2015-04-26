@@ -20,7 +20,7 @@ public class Product {
 		name = "No Name";
 		url = "/image.png";
 		price = 0.00;
-		setQuantity(0);
+		quantity = 0;
 	}
 	
 	public Product(int id, String name, String url, double price, int quantity)
@@ -29,7 +29,7 @@ public class Product {
 		this.name = name;
 		this.url = url;
 		this.price = price;
-		this.setQuantity(quantity);
+		this.quantity = 0;
 	}
 
 	public int getId() {

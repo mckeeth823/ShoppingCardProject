@@ -134,14 +134,14 @@ public class Customer {
 	/**
 	 * @return the password
 	 */
-	public String getpassword() {
+	public String getPassword() {
 		return password;
 	}
 
 	/**
 	 * @param password the password to set
 	 */
-	public void setpassword(String password) {
+	public void setPassword(String password) {
 		this.password = password;
 	}
 	

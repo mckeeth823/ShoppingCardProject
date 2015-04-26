@@ -56,7 +56,7 @@ public class AddCustQuery {
 				ps.setString(5, customer.getState());
 				ps.setInt(6, customer.getZip());
 				ps.setString(7, customer.getuName());
-				ps.setString(8, customer.getpassword());
+				ps.setString(8, customer.getPassword());
 						
 				// execute the query
 				ps.executeUpdate();

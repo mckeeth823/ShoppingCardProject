@@ -1,4 +1,3 @@
-@CHARSET "UTF-8";
 
 body {
 	font: 14px/21px "Lucida Sans", "Lucida Grande", 
@@ -69,3 +68,9 @@ button.submit {
 button.submit:hover {
 	background-color:#3D991F;
 }
+
+.input-group-addon {
+    min-width:100px;
+    text-align:left;
+}
+

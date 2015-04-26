@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import utilities.BCrypt;
 import dbHelpers.AddCustQuery;
 import model.Customer;
 
@@ -47,6 +48,8 @@ public class AddCustServlet extends HttpServlet {
 		int zip = Integer.parseInt(request.getParameter("zip"));
 		String uName = request.getParameter("uName");
 		String password = request.getParameter("password");
+		
+		password = BCrypt.hashpw(password,BCrypt.gensalt(12));
 		
 		Customer customer = new Customer(fName, lName, address, city, 
 				state, zip, uName, password);

@@ -7,6 +7,8 @@
 <%
 	Cart cart = (Cart)session.getAttribute("cart");
 	ArrayList<Product> inventory = (ArrayList<Product>)session.getAttribute("inventory");
+	String rowStart = "<div class=\"row\">";
+	String rowEnd = "</div>";
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -22,20 +24,51 @@
 		<button class="btn btn-default" style="background-color:yellow; color:black;">My Cart</button>
 	</div>
 	<!-- Body -->
-	<div>
+	<div class="container" style="background-color:#DBECF9; margin:0 auto; text-align:center; box-shadow:0px 0px 2px 0px grey;">
+		<div class="row">
 		<form action="addProduct" method=POST> 
-		<c:forEach var="current" items="${inventory}">
-			<div>
-				<h4>${current.name}</h4><br>
-				<div><img src="images/${current.url}" style="height:200px; width:300px;"></div><br>
-				<h4>Price: $${current.price }</h4><br>
-				<h4>Remaining Items: ${current.quantity}</h4>
-				<input class="form-control" type=text name="quantity"><br>
-				<input class="form-control" type=text name="id" value=${current.id }><br>
-				<button type="submit" class="btn btn-default">Add to Cart</button>
-			</div>
+		<c:forEach var="current" items="${inventory}" varStatus="loop">
+			<!-- Testing if it is going in the first column -->
+			<c:if test="(getCategoryIndex(${loop.index}) % 3) == 1">
+				<%=rowStart %>
+				<div class="col-md-4">
+					<h4>${current.name}</h4><br>
+					<div><img src="images/${current.url}"></div><br>
+					<h4>Price: $${current.price }</h4><br>
+					<h4>Remaining Items: ${current.quantity}</h4>
+					<input class="form-control" type=text name="quantity"><br>
+					<input class="form-control" type=text name="id" value=${current.id }><br>
+					<button type="submit" class="btn btn-default">Add to Cart</button>
+				</div>
+			</c:if>
+			<!-- Testing if it is going in the middle column -->
+			<c:if test="(getCategoryIndex(${loop.index}) % 3) == 2">
+				<div class="col-md-4">
+					<h4>${current.name}</h4><br>
+					<div><img src="images/${current.url}"></div><br>
+					<h4>Price: $${current.price }</h4><br>
+					<h4>Remaining Items: ${current.quantity}</h4>
+					<input class="form-control" type=text name="quantity"><br>
+					<input class="form-control" type=text name="id" value=${current.id }><br>
+					<button type="submit" class="btn btn-default">Add to Cart</button>
+				</div>
+			</c:if>
+			<!-- Testing if it is going in the last column -->
+			<c:if test="(getCategoryIndex(${loop.index}) % 3) == 0">
+				<div class="col-md-4">
+					<h4>${current.name}</h4><br>
+					<div><img src="images/${current.url}"></div><br>
+					<h4>Price: $${current.price }</h4><br>
+					<h4>Remaining Items: ${current.quantity}</h4>
+					<input class="form-control" type=text name="quantity"><br>
+					<input class="form-control" type=text name="id" value=${current.id }><br>
+					<button type="submit" class="btn btn-default">Add to Cart</button>
+				</div>
+				<%=rowEnd %>
+			</c:if>
 		</c:forEach>
 		</form>
+		</div>
 	</div>
 	<!-- Footer -->
 	<div>
