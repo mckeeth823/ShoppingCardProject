@@ -31,6 +31,15 @@ public class Product {
 		this.price = price;
 		this.quantity = 0;
 	}
+	
+	public Product(Product p, int quantity)
+	{
+		this.id = p.getId();
+		this.name = p.getName();
+		this.url = p.getUrl();
+		this.price = p.getPrice();
+		this.quantity = quantity;
+	}
 
 	public int getId() {
 		return id;

@@ -48,6 +48,7 @@ public class AddCustServlet extends HttpServlet {
 		int zip = Integer.parseInt(request.getParameter("zip"));
 		String uName = request.getParameter("uName");
 		String password = request.getParameter("password");
+		String url = "/products.jsp";
 		
 		password = BCrypt.hashpw(password,BCrypt.gensalt(12));
 		
@@ -56,10 +57,15 @@ public class AddCustServlet extends HttpServlet {
 		
 		// create an AddCustomerQuery object and use it to add the customer
 		AddCustQuery acq = new AddCustQuery("netappsdb", "root", "password");
-		acq.doAdd(customer);
 		
+		boolean result = acq.doAdd(customer);
+		if(!result)
+		{
+			request.setAttribute("errorMessage", "Error registering your information. Please try again.");
+			url = "/registerForm.jsp";
+		}
 		// pass control to the customerAccount
-		String url = "/products.jsp";
+		
 				
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response);

@@ -5,12 +5,24 @@
 <%@ page import="model.Cart" %>
 <%@ page import="java.util.ArrayList" %>
 <%
-	Cart cart = (Cart)session.getAttribute("cart");
+	// @author: Conner McKeeth
+	Cart cart = null;
+	String errorMessage = (String)request.getAttribute("errorMessage");	
+
+	if(session.getAttribute("cart") instanceof Cart)
+	{
+		cart = (Cart)session.getAttribute("cart");
+	}
+	else
+	{
+		@SuppressWarnings("unchecked")
+		ArrayList<Product> cartProducts = (ArrayList<Product>) session.getAttribute("cart");
+		cart = new Cart(cartProducts);
+	}
 	ArrayList<Product> inventory = (ArrayList<Product>)session.getAttribute("inventory");
-	String rowStart = "<div class=\"row\">";
-	String rowEnd = "</div>";
+	
+	
 %>
-<!-- Author: Conner McKeeth -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -23,66 +35,91 @@
 	<!-- Title -->
 	<div style="text-align:center;">
 		<h1 class="page-header">Product Shopper</h1>
-		<a class="btn btn-primary" role="button" href="cart">My Cart<span class="badge"><c:if test="${cart.getProducts().size() >= 1 }">${cart.getSize() }</c:if></span></a>
+		<a class="btn btn-default btn-lg" style="background-color:yellow; margin:10px auto;" role="button" href="cart">
+			<span class="glyphicon glyphicon-shopping-cart"></span> My Cart
+			<%
+				if(cart!=null)
+				{
+					if(cart.getProducts().size() > 0)
+						out.println("<span class=\"badge\">" + cart.getSize() + "</span>");
+				}
+			%>
+		</a>
 	</div>
 	<!-- Body -->
 	<div class="container" style="text-align:center; margin:0 auto;">
+		<div class="row">
+			<div class="col-md-4"></div>
+			<%
+				if(errorMessage != null)
+				{
+			%>
+			<div class="alert alert-danger col-md-4" role="alert" style="margin:10px auto;">
+  				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span><%=errorMessage %></span>
+			</div>
+			<br>
+			<%
+				} 
+			%>
+			<div class="col-md-4"></div>
+		</div>
 		
 		<c:forEach var="current" items="${inventory}" varStatus="loop">
-			<c:choose>
-				<c:when test="${(loop.index+1) % 3 == 1}">
-					<form action="addProduct" method=POST> 
-						<div class="col-md-4 product">
-							<h2>${current.name}</h2>
-							<div><img class="productImage" src="images/${current.url}"></div>
-							<div class="productDetails">
-								<h3>Price: <small> $${current.price }</small></h3>
-								<h3>Remaining Items:<small>${current.quantity}</small></h3>
-								<h3>Quantity: </h3>
-								<input class="form-control qInput" type=text name="quantity" required>
-								<input class="form-control" type=hidden name="id" value=${current.id }>
-								<button type="submit" class="btn btn-default">Add to Cart</button>
+			<c:if test="${current.getQuantity() >= 0 }">
+				<c:choose>
+					<c:when test="${(loop.index+1) % 3 == 1}">
+						<form action="addProduct" method=POST> 
+							<div class="col-md-4 product">
+								<h2>${current.name}</h2>
+								<div><img class="productImage" src="images/${current.url}"></div>
+								<div class="productDetails">
+									<h3>Price: <small> $${current.price }</small></h3>
+									<h3>Remaining Items:<small>${current.quantity}</small></h3>
+									<h3>Quantity: </h3>
+									<input class="form-control qInput" type=text name="quantity" required>
+									<input class="form-control" type=hidden name="id" value=${current.id }>
+									<button type="submit" class="btn btn-default">Add to Cart</button>
+								</div>
 							</div>
-						</div>
-					</form>
-				</c:when>
-				
-				<c:when test="${(loop.index+1) % 3 == 2}">
-					<form action="addProduct" method=POST> 
-						<div class="col-md-4 product">
-							<h2>${current.name}</h2>
-							<div><img class="productImage" src="images/${current.url}"></div>
-							<div class="productDetails">
-								<h3>Price: <small>$${current.price }</small></h3>
-								<h3>Remaining Items: <small>${current.quantity}</small></h3>
-								<h3>Quantity: </h3>
-								<input class="form-control qInput" type=text name="quantity" required>
-								<input class="form-control" type=hidden name="id" value=${current.id }>
-								<button type="submit" class="btn btn-default">Add to Cart</button>
+						</form>
+					</c:when>
+					
+					<c:when test="${(loop.index+1) % 3 == 2}">
+						<form action="addProduct" method=POST> 
+							<div class="col-md-4 product">
+								<h2>${current.name}</h2>
+								<div><img class="productImage" src="images/${current.url}"></div>
+								<div class="productDetails">
+									<h3>Price: <small>$${current.price }</small></h3>
+									<h3>Remaining Items: <small>${current.quantity}</small></h3>
+									<h3>Quantity: </h3>
+									<input class="form-control qInput" type=text name="quantity" required>
+									<input class="form-control" type=hidden name="id" value=${current.id }>
+									<button type="submit" class="btn btn-default">Add to Cart</button>
+								</div>
 							</div>
-						</div>
-					</form>
-				</c:when>
-				
-				<c:when test="${(loop.index+1) % 3 == 0}">
-					<form action="addProduct" method=POST> 
-						<div class="col-md-4 product">
-							<h2>${current.name}</h2>
-							<div><img class="productImage" src="images/${current.url}"></div>
-							<div class="productDetails">
-								<h3>Price: <small>$${current.price }</small></h3>
-								<h3>Remaining Items: <small>${current.quantity}</small></h3>
-								<h3>Quantity: </h3>
-								<input class="form-control qInput" type=text name="quantity" required>
-								<input class="form-control" type=hidden name="id" value=${current.id }>
-								<button type="submit" class="btn btn-default">Add to Cart</button>
+						</form>
+					</c:when>
+					
+					<c:when test="${(loop.index+1) % 3 == 0}">
+						<form action="addProduct" method=POST> 
+							<div class="col-md-4 product">
+								<h2>${current.name}</h2>
+								<div><img class="productImage" src="images/${current.url}"></div>
+								<div class="productDetails">
+									<h3>Price: <small>$${current.price }</small></h3>
+									<h3>Remaining Items: <small>${current.quantity}</small></h3>
+									<h3>Quantity: </h3>
+									<input class="form-control qInput" type=text name="quantity" required>
+									<input class="form-control" type=hidden name="id" value=${current.id }>
+									<button type="submit" class="btn btn-default">Add to Cart</button>
+								</div>
 							</div>
-						</div>
-					</form>
-				</c:when>
-			</c:choose>
+						</form>
+					</c:when>
+				</c:choose>
+			</c:if>
 		</c:forEach>
-		</form>
 	</div>
 	<!-- Footer -->
 	<div>

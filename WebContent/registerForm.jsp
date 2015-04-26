@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	String errorMessage = (String)request.getAttribute("errorMessage");
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -66,6 +69,21 @@
 				<br>
 			</form>
 		</div>
+		<div class="col-md-4"></div>
+	</div>
+	<div class="row">
+		<div class="col-md-4"></div>
+		<%
+			if(errorMessage != null)
+			{
+		%>
+		<div class="alert alert-danger col-md-4" role="alert" style="margin-top:5px;">
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span><%=errorMessage %></span>
+		</div>
+		<br>
+		<%
+			} 
+		%>
 		<div class="col-md-4"></div>
 	</div>
 </div>

@@ -51,7 +51,7 @@
 			{
 		%>
 		<div class="alert alert-danger col-md-4" role="alert" style="margin-top:5px;">
-			<span><%=errorMessage %></span>
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span><%=errorMessage %></span>
 		</div>
 		<br>
 		<%

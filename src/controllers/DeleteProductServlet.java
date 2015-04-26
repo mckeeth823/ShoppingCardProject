@@ -5,29 +5,27 @@ import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dbHelpers.UpdateQuantityQuery;
 import model.Cart;
 import model.Product;
+import dbHelpers.UpdateQuantityQuery;
 
 /**
- * Servlet implementation class AddProductServlet
- * @author Thatcher Smith
+ * Servlet implementation class RemoveProductServlet
  */
-@WebServlet("/addProduct")
-public class AddProductServlet extends HttpServlet {
+@WebServlet("/deleteProduct")
+public class DeleteProductServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AddProductServlet() {
+    public DeleteProductServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,36 +34,37 @@ public class AddProductServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request, response);
+		// TODO Auto-generated method stub
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		String errorMessage = "";
-		String url = "products.jsp";
-		Cart cart = null;
+		String url = "cart.jsp";
+		Cart cartObject = null;
+		
 		if(session.getAttribute("cart") instanceof Cart)
 		{
-			cart = (Cart)session.getAttribute("cart");
+			cartObject = (Cart)session.getAttribute("cart");
 		}
 		else
 		{
 			@SuppressWarnings("unchecked")
 			ArrayList<Product> cartProducts = (ArrayList<Product>) session.getAttribute("cart");
-			cart = new Cart(cartProducts);
+			cartObject = new Cart(cartProducts);
 		}
 		
 		@SuppressWarnings("unchecked")
 		ArrayList<Product> inventory = (ArrayList<Product>)session.getAttribute("inventory");
 		int id = Integer.parseInt(request.getParameter("id"));
-		int qty = Integer.parseInt(request.getParameter("quantity"));
+		int quantity = Integer.parseInt(request.getParameter("quantity"));
 		int index = -1;
 		int oldQty = 0;
-		Product p = null;
+
 		Product inventoryP = null;
 		
 		//finds matching product in inventory the list
@@ -73,40 +72,36 @@ public class AddProductServlet extends HttpServlet {
 		{
 			if(inventory.get(i).getId() == id)
 			{
-				p = inventory.get(i);
-				oldQty = p.getQuantity();
+				inventoryP = inventory.get(i);
+				oldQty = inventoryP.getQuantity();
 				index = i;
 			}
 		}
 		
 		// Testing if product id matches inventory
-		if(p != null)
+		if(inventoryP != null)
 		{
 			//updates product quantity
-			int newQty = oldQty - qty;
-			p.setQuantity(newQty);
+			int newQty = oldQty + quantity;
+			inventoryP.setQuantity(newQty);
 			
 			// create an UpdateQuantityQuery object and use it to update product qty in database
 			UpdateQuantityQuery uq = new UpdateQuantityQuery("netappsdb", "root", "password");
 			uq.doUpdate(newQty, index+1);
 			
-			if(cart.getProduct(id)!=null)
-			{
-				cart.getProduct(id).setQuantity(cart.getProduct(id).getQuantity() + qty);
-			}
-			else
-			{
-				inventoryP = new Product(p,qty);
-				cart.addProduct(inventoryP);
-			}
+			cartObject.removeProduct(id);
+			request.setAttribute("total", cartObject.getTotal());
+			
+			ArrayList<Product> cart = cartObject.getProducts();
 			
 			session.setAttribute("cart", cart);
 			session.setAttribute("inventory", inventory);
+			
 							
 		}
 		else
 		{
-			errorMessage = "There was an error adding the product";
+			errorMessage = "There was an error removing the product";
 			request.setAttribute("errorMessage",errorMessage);
 		}
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);

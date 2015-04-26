@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.Cart;
+import model.Product;
 
 /**
  * Servlet implementation class CartServlet
@@ -35,7 +36,27 @@ public class CartServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		this.doPost(request,response);
+		session = request.getSession();
+		Cart cartObject = null;
+		if(session.getAttribute("cart") instanceof Cart)
+		{
+			cartObject = (Cart)session.getAttribute("cart");
+		}
+		else
+		{
+			@SuppressWarnings("unchecked")
+			ArrayList<Product> cartProducts = (ArrayList<Product>) session.getAttribute("cart");
+			cartObject = new Cart(cartProducts);
+		}
+		request.setAttribute("total", cartObject.getTotal());
+		
+		ArrayList<Product> cart = cartObject.getProducts();
+		session.setAttribute("cart", cart);
+		
+		String url = "cart.jsp";
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+		dispatcher.forward(request, response);
 	}
 
 	/**
@@ -43,15 +64,7 @@ public class CartServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		session = request.getSession();;
-		Cart cart = (Cart) session.getAttribute("cart");
-		
-		request.setAttribute("total", cart.getTotal());
-		
-		String url = "cart.jsp";
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-		dispatcher.forward(request, response);
+		this.doGet(request,response);
 	}
 
 }
