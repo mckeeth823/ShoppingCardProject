@@ -14,7 +14,8 @@ public class Cart {
 	
 	public Cart()
 	{
-		products = null;
+		ArrayList<Product> ps = new ArrayList<Product>();
+		this.products = ps;
 	}
 	
 	public Cart(ArrayList<Product> products)
@@ -35,6 +36,16 @@ public class Cart {
 	public void addProduct(Product product)
 	{
 		this.products.add(product);
+	}
+	
+	public int getSize()
+	{
+		int size = 0;
+		for(Product product:products)
+		{
+			size+=product.getQuantity();
+		}
+		return size;
 	}
 	
 	public double getTotal()

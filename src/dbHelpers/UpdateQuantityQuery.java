@@ -39,15 +39,15 @@ public class UpdateQuantityQuery {
 		}
 	}
 	
-	public void doUpdate(Product product)
+	public void doUpdate(int quantity, int id)
 	{
 		String query = "update product set quantity=? where id=?"; // TODO: Ensure columns are named quantity and id in database
 		
 		try {
 			PreparedStatement ps = connection.prepareStatement(query);
 			
-			ps.setInt(1, product.getQuantity());
-			ps.setInt(2, product.getId());
+			ps.setInt(1, quantity);
+			ps.setInt(2, id);
 			
 			ps.executeUpdate();
 		} catch (SQLException e) {

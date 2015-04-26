@@ -45,34 +45,50 @@ public class AddProductServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		HttpSession session = request.getSession();
+		String errorMessage = "";
+		String url = "products.jsp";
 		Cart cart = (Cart)session.getAttribute("cart");
 		@SuppressWarnings("unchecked")
 		ArrayList<Product> inventory = (ArrayList<Product>)session.getAttribute("inventory");
-		int id = (Integer)request.getAttribute("id");
-		int qty = (Integer)request.getAttribute("quantity");
-		
+		int id = Integer.parseInt(request.getParameter("id"));
+		int qty = Integer.parseInt(request.getParameter("quantity"));
 		
 		//finds matching product in inventory the list and adds it to the cart
-		int i;
-		for(i = 0; i <= inventory.size() - 1; i++)
+		int index = -1;
+		int oldQty = 0;
+		Product p = null;
+		for(int i = 0; i <= inventory.size() - 1; i++)
 		{
 			if(inventory.get(i).getId() == id)
 			{
-				cart.addProduct(inventory.get(i));
-				
+				p = inventory.get(i);
+				oldQty = p.getQuantity();
 			}
 		}
 		
-		//updates product quantity
-		inventory.get(i).setQuantity(inventory.get(i).getQuantity() - qty);
-		
-		// create an UpadteQuantityQuery object and use it to update product qty in databse
-		UpdateQuantityQuery uq = new UpdateQuantityQuery("customer", "root", "password");
-		uq.doUpdate(inventory.get(i));
-				
-		// pass control to the customerAccount
-		String url = "product.jsp";
-						
+		// Error: Product not matching id
+		if(p != null)
+		{
+			//updates product quantity
+			int newQty = oldQty - qty;
+			p.setQuantity(newQty);
+			
+			// create an UpadteQuantityQuery object and use it to update product qty in database
+			UpdateQuantityQuery uq = new UpdateQuantityQuery("netappsdb", "root", "password");
+			uq.doUpdate(newQty, index+1);
+			
+			p.setQuantity(oldQty);
+			cart.addProduct(p);
+			
+			session.setAttribute("cart", cart);
+			session.setAttribute("inventory", inventory);
+							
+		}
+		else
+		{
+			errorMessage = "There was an error adding the product";
+			request.setAttribute("errorMessage",errorMessage);
+		}
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response);
 		

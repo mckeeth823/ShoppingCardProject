@@ -10,65 +10,79 @@
 	String rowStart = "<div class=\"row\">";
 	String rowEnd = "</div>";
 %>
+<!-- Author: Conner McKeeth -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Select Products to Purchase</title>
 <link rel="stylesheet" href="Scripts/css/bootstrap.min.css"></link>
+<link rel="stylesheet" href="style.css"></link>
 </head>
 <body>
 	<!-- Title -->
-	<div>
+	<div style="text-align:center;">
 		<h1 class="page-header">Product Shopper</h1>
-		<button class="btn btn-default" style="background-color:yellow; color:black;">My Cart</button>
+		<a class="btn btn-primary" role="button" href="cart">My Cart<span class="badge"><c:if test="${cart.getProducts().size() >= 1 }">${cart.getSize() }</c:if></span></a>
 	</div>
 	<!-- Body -->
-	<div class="container" style="background-color:#DBECF9; margin:0 auto; text-align:center; box-shadow:0px 0px 2px 0px grey;">
-		<div class="row">
-		<form action="addProduct" method=POST> 
+	<div class="container" style="text-align:center; margin:0 auto;">
+		
 		<c:forEach var="current" items="${inventory}" varStatus="loop">
-			<!-- Testing if it is going in the first column -->
-			<c:if test="(getCategoryIndex(${loop.index}) % 3) == 1">
-				<%=rowStart %>
-				<div class="col-md-4">
-					<h4>${current.name}</h4><br>
-					<div><img src="images/${current.url}"></div><br>
-					<h4>Price: $${current.price }</h4><br>
-					<h4>Remaining Items: ${current.quantity}</h4>
-					<input class="form-control" type=text name="quantity"><br>
-					<input class="form-control" type=text name="id" value=${current.id }><br>
-					<button type="submit" class="btn btn-default">Add to Cart</button>
-				</div>
-			</c:if>
-			<!-- Testing if it is going in the middle column -->
-			<c:if test="(getCategoryIndex(${loop.index}) % 3) == 2">
-				<div class="col-md-4">
-					<h4>${current.name}</h4><br>
-					<div><img src="images/${current.url}"></div><br>
-					<h4>Price: $${current.price }</h4><br>
-					<h4>Remaining Items: ${current.quantity}</h4>
-					<input class="form-control" type=text name="quantity"><br>
-					<input class="form-control" type=text name="id" value=${current.id }><br>
-					<button type="submit" class="btn btn-default">Add to Cart</button>
-				</div>
-			</c:if>
-			<!-- Testing if it is going in the last column -->
-			<c:if test="(getCategoryIndex(${loop.index}) % 3) == 0">
-				<div class="col-md-4">
-					<h4>${current.name}</h4><br>
-					<div><img src="images/${current.url}"></div><br>
-					<h4>Price: $${current.price }</h4><br>
-					<h4>Remaining Items: ${current.quantity}</h4>
-					<input class="form-control" type=text name="quantity"><br>
-					<input class="form-control" type=text name="id" value=${current.id }><br>
-					<button type="submit" class="btn btn-default">Add to Cart</button>
-				</div>
-				<%=rowEnd %>
-			</c:if>
+			<c:choose>
+				<c:when test="${(loop.index+1) % 3 == 1}">
+					<form action="addProduct" method=POST> 
+						<div class="col-md-4 product">
+							<h2>${current.name}</h2>
+							<div><img class="productImage" src="images/${current.url}"></div>
+							<div class="productDetails">
+								<h3>Price: <small> $${current.price }</small></h3>
+								<h3>Remaining Items:<small>${current.quantity}</small></h3>
+								<h3>Quantity: </h3>
+								<input class="form-control qInput" type=text name="quantity" required>
+								<input class="form-control" type=hidden name="id" value=${current.id }>
+								<button type="submit" class="btn btn-default">Add to Cart</button>
+							</div>
+						</div>
+					</form>
+				</c:when>
+				
+				<c:when test="${(loop.index+1) % 3 == 2}">
+					<form action="addProduct" method=POST> 
+						<div class="col-md-4 product">
+							<h2>${current.name}</h2>
+							<div><img class="productImage" src="images/${current.url}"></div>
+							<div class="productDetails">
+								<h3>Price: <small>$${current.price }</small></h3>
+								<h3>Remaining Items: <small>${current.quantity}</small></h3>
+								<h3>Quantity: </h3>
+								<input class="form-control qInput" type=text name="quantity" required>
+								<input class="form-control" type=hidden name="id" value=${current.id }>
+								<button type="submit" class="btn btn-default">Add to Cart</button>
+							</div>
+						</div>
+					</form>
+				</c:when>
+				
+				<c:when test="${(loop.index+1) % 3 == 0}">
+					<form action="addProduct" method=POST> 
+						<div class="col-md-4 product">
+							<h2>${current.name}</h2>
+							<div><img class="productImage" src="images/${current.url}"></div>
+							<div class="productDetails">
+								<h3>Price: <small>$${current.price }</small></h3>
+								<h3>Remaining Items: <small>${current.quantity}</small></h3>
+								<h3>Quantity: </h3>
+								<input class="form-control qInput" type=text name="quantity" required>
+								<input class="form-control" type=hidden name="id" value=${current.id }>
+								<button type="submit" class="btn btn-default">Add to Cart</button>
+							</div>
+						</div>
+					</form>
+				</c:when>
+			</c:choose>
 		</c:forEach>
 		</form>
-		</div>
 	</div>
 	<!-- Footer -->
 	<div>

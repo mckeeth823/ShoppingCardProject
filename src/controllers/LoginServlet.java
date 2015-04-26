@@ -72,9 +72,6 @@ public class LoginServlet extends HttpServlet {
 			String uName = request.getParameter("uName");
 			String password = request.getParameter("password");
 			
-			// encrypt the password
-			String encryptedPassword = BCrypt.hashpw(password,BCrypt.gensalt(12));
-			
 			// create a CustomerLogin object and authenticate login
 			CustomerLogin cl = new CustomerLogin("netappsdb","root","password",uName);
 			Customer customer = cl.authenticateCustomer();

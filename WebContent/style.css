@@ -5,3 +5,28 @@
     background-color:#15496D;
     color:white;
 }
+
+.product {
+	background-color:#DBECF9;
+	box-shadow:0px 0px 1px 0px #15496D;
+	border:1px solid white;
+	min-height:600px;
+	position:relative;
+}
+
+.productImage {
+	height:245px;
+	width:auto;
+}
+
+.productDetails{
+	position:absolute;
+	bottom:30px;
+	width:100%;
+}
+
+.qInput {
+	max-width:70px;
+	margin:15px auto;
+	text-align:center;
+}
