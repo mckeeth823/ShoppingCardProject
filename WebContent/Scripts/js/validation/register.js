@@ -3,13 +3,17 @@
  */
 $(function(){
 
-    $("#register").validate({
+    $("#registerForm").validate({
         rules: {
             fName: "required",
             lName: "required",
             address: "required",
             state: "required",
-            zipcode: "required",
+            zip: {
+            	required: true,
+            	minlength: 6,
+            	number: true
+            },
             uName: {
             	required: true,
             	minlength: 8
@@ -21,11 +25,15 @@ $(function(){
         },
         
         messages: {
-            fName: "Please enter your first name",
-            lName: "Please enter your last name",
+            fName: "Please enter your First Name",
+            lName: "Please enter your Last Name",
             address: "Please enter your street",
-            state: "Please enter your state",
-            zipcode: "Please enter your zipcode",
+            state: "Please enter your State",
+            zip: {
+            	required: "Please enter your Zipcode",
+            	minlength: "Zipcode is at least 6 characters",
+            	number: "Zipcode must be a number"
+            },
             uName: {
             	required: "Please enter a username",
             	minlength: "Username must be at least 8 characters"
@@ -35,7 +43,17 @@ $(function(){
                 minlength: "Password must be at least 6 characters"
             }
         },
-        
+        errorLabelContainer: ".messageBox",
+        wrapper: "li",
+        invalidHandler: function(event, validator) {
+            // 'this' refers to the form
+            var errors = validator.numberOfInvalids();
+            if (errors) {
+              $("div.messageBox").show();
+            } else {
+            	$("div.messageBox").hide();
+            }
+        },
         submitHandler: function(form) {
             form.submit();
         }

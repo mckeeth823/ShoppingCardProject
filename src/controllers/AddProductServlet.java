@@ -47,6 +47,7 @@ public class AddProductServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		String errorMessage = null;
 		String url = "products.jsp";
+		
 		Cart cart = null;
 		if(session.getAttribute("cart") instanceof Cart)
 		{
@@ -62,67 +63,77 @@ public class AddProductServlet extends HttpServlet {
 		@SuppressWarnings("unchecked")
 		ArrayList<Product> inventory = (ArrayList<Product>)session.getAttribute("inventory");
 		int id = Integer.parseInt(request.getParameter("id"));
-		int qty = Integer.parseInt(request.getParameter("quantity"));
-		int index = -1;
-		int oldQty = 0;
-		Product p = null;
-		Product inventoryP = null;
 		
-		
-		
-		//finds matching product in inventory the list
-		for(int i = 0; i <= inventory.size() - 1; i++)
+		if(request.getParameter("quantity") == null)
 		{
-			if(inventory.get(i).getId() == id)
-			{
-				p = inventory.get(i);
-				oldQty = p.getQuantity();
-				index = i;
-			}
-		}
-		if(qty <= 0)
-		{
-			errorMessage = "Quantity entered must be a positive number";
-			request.setAttribute("errorMessage",errorMessage);
-		}
-		else if(oldQty < qty)
-		{
-			errorMessage = "The quantity you entered is larger than the current stock";
-			request.setAttribute("errorMessage",errorMessage);
+			errorMessage = "Quantity was not received. Try again";
 		}
 		else
 		{
-			// Testing if product id matches inventory
-			if(p != null)
+
+			int qty = Integer.parseInt(request.getParameter("quantity"));
+			int index = -1;
+			int oldQty = 0;
+			Product p = null;
+			Product inventoryP = null;
+			
+			
+			
+			//finds matching product in inventory the list
+			for(int i = 0; i <= inventory.size() - 1; i++)
 			{
-				//updates product quantity
-				int newQty = oldQty - qty;
-				p.setQuantity(newQty);
-				
-				// create an UpdateQuantityQuery object and use it to update product qty in database
-				UpdateQuantityQuery uq = new UpdateQuantityQuery("netappsdb", "root", "password");
-				uq.doUpdate(newQty, index+1);
-				
-				if(cart.getProduct(id)!=null)
+				if(inventory.get(i).getId() == id)
 				{
-					cart.getProduct(id).setQuantity(cart.getProduct(id).getQuantity() + qty);
+					p = inventory.get(i);
+					oldQty = p.getQuantity();
+					index = i;
 				}
-				else
-				{
-					inventoryP = new Product(p,qty);
-					cart.addProduct(inventoryP);
-				}
-				
-				session.setAttribute("cart", cart);
-				session.setAttribute("inventory", inventory);
-								
+			}
+			if(qty <= 0)
+			{
+				errorMessage = "Quantity entered must be a positive number";
+				request.setAttribute("errorMessage",errorMessage);
+			}
+			else if(oldQty < qty)
+			{
+				errorMessage = "The quantity you entered is larger than the current stock";
+				request.setAttribute("errorMessage",errorMessage);
 			}
 			else
 			{
-				errorMessage = "There was an error adding the product";
-				request.setAttribute("errorMessage",errorMessage);
+				// Testing if product id matches inventory
+				if(p != null)
+				{
+					//updates product quantity
+					int newQty = oldQty - qty;
+					p.setQuantity(newQty);
+					
+					// create an UpdateQuantityQuery object and use it to update product qty in database
+					UpdateQuantityQuery uq = new UpdateQuantityQuery("netappsdb", "root", "password");
+					uq.doUpdate(newQty, index+1);
+					
+					if(cart.getProduct(id)!=null)
+					{
+						cart.getProduct(id).setQuantity(cart.getProduct(id).getQuantity() + qty);
+					}
+					else
+					{
+						inventoryP = new Product(p,qty);
+						cart.addProduct(inventoryP);
+					}
+					
+					session.setAttribute("cart", cart);
+					session.setAttribute("inventory", inventory);
+									
+				}
+				else
+				{
+					errorMessage = "There was an error adding the product";
+					request.setAttribute("errorMessage",errorMessage);
+				}
 			}
 		}
+		
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response);

@@ -20,8 +20,8 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-4"></div>
-	 	<div class="col-md-4" style="background-color:#DBECF9; margin:0 auto; text-align:center; box-shadow:0px 0px 2px 0px grey;">
-			<form id="register" class="navbar-form" action="register" method="POST">
+	 	<div class="col-md-4 user-form">
+			<form id="registerForm" class="navbar-form" action="register" method="POST">
 				<h1>Register</h1>
 				<div class="input-group">
 				<span class="input-group-addon">First Name:</span>
@@ -73,6 +73,11 @@
 	</div>
 	<div class="row">
 		<div class="col-md-4"></div>
+		<div class="col-md-4 messageBox alert alert-danger" style="display:none"></div>
+		<div class="col-md-4"></div>
+	</div>
+	<div class="row">
+		<div class="col-md-4"></div>
 		<%
 			if(errorMessage != null)
 			{
@@ -91,6 +96,6 @@
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="Scripts/jquery-1.11.x.min.js"></script>
 <script src="Scripts/js/bootstrap.min.js"></script>
-<script src="Scripts/jquery.validate.min.js"></script>
+<script src="Scripts//js/jquery.validate.min.js"></script>
 <script src="Scripts/js/validation/register.js"></script>
 </html>
