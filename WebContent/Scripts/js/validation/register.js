@@ -11,7 +11,7 @@ $(function(){
             state: "required",
             zip: {
             	required: true,
-            	minlength: 6,
+            	minlength: 5,
             	number: true
             },
             uName: {
@@ -31,7 +31,7 @@ $(function(){
             state: "Please enter your State",
             zip: {
             	required: "Please enter your Zipcode",
-            	minlength: "Zipcode is at least 6 characters",
+            	minlength: "Zipcode is at least 5 characters",
             	number: "Zipcode must be a number"
             },
             uName: {

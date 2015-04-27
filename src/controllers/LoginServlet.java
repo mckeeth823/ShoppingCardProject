@@ -96,7 +96,25 @@ public class LoginServlet extends HttpServlet {
 					ReadProductsQuery rpq = new ReadProductsQuery("netappsdb", "root", "password");
 					rpq.doRead();
 					ArrayList<Product> inventory = rpq.getProducts();
-					Cart cart = new Cart();
+					Cart cart;
+					if(session.getAttribute("cart") == null)
+					{
+						cart = new Cart();
+					}
+					else
+					{
+						if(session.getAttribute("cart") instanceof Cart)
+						{
+							cart = (Cart)session.getAttribute("cart");
+						}
+						else
+						{
+							@SuppressWarnings("unchecked")
+							ArrayList<Product> cartProducts = (ArrayList<Product>) session.getAttribute("cart");
+							cart = new Cart(cartProducts);
+						}
+					}
+					
 					
 					// invalidate current session, and get new session for customer 
 					// to combat session hijacking
