@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,9 +9,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import utilities.BCrypt;
 import dbHelpers.AddCustQuery;
+import dbHelpers.ReadProductsQuery;
+import model.Cart;
 import model.Customer;
+import model.Product;
 
 /**
  * Servlet implementation class AddCustomerServlet
@@ -39,6 +45,7 @@ public class AddCustServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// get information from registrationForm.jsp and create Customer object
+		HttpSession session = request.getSession();
 		String fName = request.getParameter("fName");
 		String lName = request.getParameter("lName");
 		String address = request.getParameter("address");
@@ -47,16 +54,31 @@ public class AddCustServlet extends HttpServlet {
 		int zip = Integer.parseInt(request.getParameter("zip"));
 		String uName = request.getParameter("uName");
 		String password = request.getParameter("password");
+		String url = "/products.jsp";
+		
+		password = BCrypt.hashpw(password,BCrypt.gensalt(12));
 		
 		Customer customer = new Customer(fName, lName, address, city, 
 				state, zip, uName, password);
 		
 		// create an AddCustomerQuery object and use it to add the customer
 		AddCustQuery acq = new AddCustQuery("netappsdb", "root", "password");
-		acq.doAdd(customer);
 		
+		boolean result = acq.doAdd(customer);
+		if(!result)
+		{
+			request.setAttribute("errorMessage", "Error registering your information. Please try again.");
+			url = "/registerForm.jsp";
+		}
 		// pass control to the customerAccount
-		String url = "/products.jsp";
+		// retrieve Products and set them to session as inventory variable
+		ReadProductsQuery rpq = new ReadProductsQuery("netappsdb", "root", "password");
+		rpq.doRead();
+		ArrayList<Product> inventory = rpq.getProducts();
+		Cart cart = new Cart();
+		
+		session.setAttribute("inventory", inventory);
+		session.setAttribute("cart",cart);
 				
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response);

@@ -1,0 +1,45 @@
+.input-group-addon {
+    min-width:100px;
+    text-align:left;
+    margin-bottom:10px;
+    background-color:#15496D;
+    color:white;
+}
+
+.user-form {
+	background-color:#DBECF9;
+	border:1px solid grey;
+	border-radius:7px;
+	margin:0 auto; 
+	text-align:center;
+}
+
+.product {
+	background-color:#DBECF9;
+	border:1px solid white;
+	min-height:600px;
+	position:relative;
+	box-shadow:0px 0px 2px 0px grey;
+}
+
+.productImage {
+	height:245px;
+	width:auto;
+}
+
+.productDetails{
+	position:absolute;
+	bottom:30px;
+	width:100%;
+}
+
+.qInput {
+	max-width:70px;
+	margin:15px auto;
+	text-align:center;
+}
+
+.messageBox {
+	display:none;
+	margin:10px auto;
+}

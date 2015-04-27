@@ -45,34 +45,96 @@ public class AddProductServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		HttpSession session = request.getSession();
-		Cart cart = (Cart)session.getAttribute("cart");
+		String errorMessage = null;
+		String url = "products.jsp";
+		
+		Cart cart = null;
+		if(session.getAttribute("cart") instanceof Cart)
+		{
+			cart = (Cart)session.getAttribute("cart");
+		}
+		else
+		{
+			@SuppressWarnings("unchecked")
+			ArrayList<Product> cartProducts = (ArrayList<Product>) session.getAttribute("cart");
+			cart = new Cart(cartProducts);
+		}
+		
 		@SuppressWarnings("unchecked")
 		ArrayList<Product> inventory = (ArrayList<Product>)session.getAttribute("inventory");
-		int id = (Integer)request.getAttribute("id");
-		int qty = (Integer)request.getAttribute("quantity");
+		int id = Integer.parseInt(request.getParameter("id"));
 		
-		
-		//finds matching product in inventory the list and adds it to the cart
-		int i;
-		for(i = 0; i <= inventory.size() - 1; i++)
+		if(request.getParameter("quantity") == null)
 		{
-			if(inventory.get(i).getId() == id)
+			errorMessage = "Quantity was not received. Try again";
+		}
+		else
+		{
+
+			int qty = Integer.parseInt(request.getParameter("quantity"));
+			int index = -1;
+			int oldQty = 0;
+			Product p = null;
+			Product inventoryP = null;
+			
+			
+			
+			//finds matching product in inventory the list
+			for(int i = 0; i <= inventory.size() - 1; i++)
 			{
-				cart.addProduct(inventory.get(i));
-				
+				if(inventory.get(i).getId() == id)
+				{
+					p = inventory.get(i);
+					oldQty = p.getQuantity();
+					index = i;
+				}
+			}
+			if(qty <= 0)
+			{
+				errorMessage = "Quantity entered must be a positive number";
+				request.setAttribute("errorMessage",errorMessage);
+			}
+			else if(oldQty < qty)
+			{
+				errorMessage = "The quantity you entered is larger than the current stock";
+				request.setAttribute("errorMessage",errorMessage);
+			}
+			else
+			{
+				// Testing if product id matches inventory
+				if(p != null)
+				{
+					//updates product quantity
+					int newQty = oldQty - qty;
+					p.setQuantity(newQty);
+					
+					// create an UpdateQuantityQuery object and use it to update product qty in database
+					UpdateQuantityQuery uq = new UpdateQuantityQuery("netappsdb", "root", "password");
+					uq.doUpdate(newQty, index+1);
+					
+					if(cart.getProduct(id)!=null)
+					{
+						cart.getProduct(id).setQuantity(cart.getProduct(id).getQuantity() + qty);
+					}
+					else
+					{
+						inventoryP = new Product(p,qty);
+						cart.addProduct(inventoryP);
+					}
+					
+					session.setAttribute("cart", cart);
+					session.setAttribute("inventory", inventory);
+									
+				}
+				else
+				{
+					errorMessage = "There was an error adding the product";
+					request.setAttribute("errorMessage",errorMessage);
+				}
 			}
 		}
 		
-		//updates product quantity
-		inventory.get(i).setQuantity(inventory.get(i).getQuantity() - qty);
 		
-		// create an UpadteQuantityQuery object and use it to update product qty in databse
-		UpdateQuantityQuery uq = new UpdateQuantityQuery("customer", "root", "password");
-		uq.doUpdate(inventory.get(i));
-				
-		// pass control to the customerAccount
-		String url = "product.jsp";
-						
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response);
 		

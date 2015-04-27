@@ -8,18 +8,19 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
-import models.Product;
+import model.Product;
 
 /**
  * @author Conner McKeeth
  *
  */
-public class ReadQuery {
+public class ReadProductsQuery {
 	private Connection connection;
 	private ResultSet results;
 	
-	public ReadQuery(String dbName, String uname, String pwd)
+	public ReadProductsQuery(String dbName, String uname, String pwd)
 	{
 		String url = "jdbc:mysql://localhost:3306/" + dbName;
 		
@@ -49,7 +50,7 @@ public class ReadQuery {
 	
 	public void doRead()
 	{
-		String query = "select * from products";
+		String query = "select * from product";
 		
 		try
 		{
@@ -62,46 +63,20 @@ public class ReadQuery {
 		}
 	}
 	
-	public String getHTMLTable()
+	public ArrayList<Product> getProducts()
 	{
-		String table = "";
-		table+= "<table class=\"table\">";
+		ArrayList<Product> inventory = new ArrayList<Product>();
 		try
 		{
 			while(this.results.next())
 			{
 				Product product = new Product();
-				product.setSku(this.results.getString("sku"));
-				product.setType(this.results.getString("type"));
-				product.setFlavor(this.results.getString("flavor"));
-				product.setCost(this.results.getDouble("cost"));
+				product.setId(this.results.getInt("id"));
+				product.setName(this.results.getString("name"));
+				product.setUrl(this.results.getString("url"));
 				product.setPrice(this.results.getDouble("price"));
 				product.setQuantity(this.results.getInt("quantity"));
-				
-				table += "<tr>";
-				table += "<td>";
-				table += product.getSku();
-				table += "</td>";
-				table += "<td>";
-				table += product.getType();
-				table += "</td>";
-				table += "<td>";
-				table += product.getFlavor();
-				table += "</td>";
-				table += "<td>";
-				table += product.getCost();
-				table += "</td>";
-				table += "<td>";
-				table += product.getPrice();
-				table += "</td>";
-				table += "<td>";
-				table += product.getQuantity();
-				table += "</td>";
-				table += "<td>";
-					table += "<a href=update?sku=" + product.getSku() + ">update</a></td> "
-							+ "<td><a href=delete?sku=" + product.getSku() + ">delete</a></td>";
-				table += "</td>";
-				table += "</tr>";
+				inventory.add(product);
 			}
 		}
 		catch (SQLException e)
@@ -109,6 +84,6 @@ public class ReadQuery {
 			e.printStackTrace();
 		}
 		
-		return table;
+		return inventory;
 	}
 }

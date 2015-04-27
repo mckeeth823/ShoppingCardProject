@@ -40,10 +40,9 @@ public class AddCustQuery {
 			
 		}
 
-		public void doAdd(Customer customer) {
+		public boolean doAdd(Customer customer) {
 			// set up a string to hold the query
 			String query = "insert into customer (fName, lName, address, city, state, zipcode, uName, password) values (?, ?, ?, ?, ?, ?, ?, ?)";
-			
 			// create a prepared statement using our query string
 			try {
 						
@@ -56,14 +55,15 @@ public class AddCustQuery {
 				ps.setString(5, customer.getState());
 				ps.setInt(6, customer.getZip());
 				ps.setString(7, customer.getuName());
-				ps.setString(8, customer.getpassword());
+				ps.setString(8, customer.getPassword());
 						
 				// execute the query
 				ps.executeUpdate();
+				return true;
 						
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				return false;
 			}
 				
 	}	
